@@ -1,0 +1,14 @@
+[tool.poetry]
+name = "lumiere-client-python"
+version = "1.0.0"
+description = "Lumiere client for Python"
+authors = ["Alan Palazzolo"]
+readme = "README.md"
+
+# With dependencies, please document any implicit dependencies or note any
+# packages that provide module names that are not obvious.  Try to keep in
+# alphabetical order.
+[tool.poetry.dependencies]
+python = ">=3.8"
+python-socketio = "^5.5.0"
+requests = "^2.26.0"
