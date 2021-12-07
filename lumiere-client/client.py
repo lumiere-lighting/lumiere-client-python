@@ -4,21 +4,18 @@ import time
 import math
 import logging
 from dotenv import load_dotenv
-from rpi_ws281x import Color, PixelStrip, ws
-from colour import hex2rgb
+from rpi_ws281x import Color as PixelColor, PixelStrip, ws
+from coloraide import Color
 from config import get_config
 
 # Config
 load_dotenv()
 config = get_config()
-config["strip_type"] = {
-  "rgb": ws.WS2811_STRIP_RGB,
-  "grb": ws.WS2811_STRIP_GRB
-}[config["strip_type"]] if "strip_type" in config else ws.WS2811_STRIP_RGB
 
 # Logging
 logging.basicConfig(level=config["log_level"])
 logger = logging.getLogger("lumiere-client")
+logger.info(config)
 
 # SocketIO client
 sio = socketio.Client()
@@ -72,9 +69,10 @@ def disconnect():
 
 
 # Hex to pixel
-def hex2pixel(hex):
-    rgb = hex2rgb(hex)
-    return Color(math.ceil(rgb[0] * 255), math.ceil(rgb[1] * 255), math.ceil(rgb[2] * 255))
+def hex2pixel(hex_string):
+    c = Color(hex_string)
+    c_dict = c.to_dict()
+    return PixelColor(math.ceil(c_dict["r"] * 255), math.ceil(c_dict["g"] * 255), math.ceil(c_dict["b"] * 255))
 
 
 # Spread out colors into strip
@@ -103,17 +101,17 @@ def main():
     global pixel_strip
 
     # Create NeoPixel object with appropriate configuration.
+    # TODO: Should other params be configurable
     pixel_strip = PixelStrip(
         config["pixel_length"],
         config["gpio_channel"],
-        # Should this be configurable
-        800000,
-        config["dma_channel"],
-        # Should this be configurable
-        False,
-        config["brightness"],
-        # Should this be configurable
-        0,
+        dma=config["dma_channel"],
+        brightness=config["brightness"],
+        strip_type=config["strip_type"],
+        freq_hz=800000,
+        invert=False,
+        channel=0,
+        gamma=None
     )
 
     pixel_strip.begin()
