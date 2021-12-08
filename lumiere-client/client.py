@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 from rpi_ws281x import PixelStrip
 from config import get_config
 from utils import spread_colors, strip_set_colors
-from animate import animate_to_colors
+from animate import animate_to_colors, animate_train_rolling
 
 # Config
 load_dotenv()
@@ -53,7 +53,8 @@ def lights(lights):
 
     # Animate if we know previous lights
     if previous_spread:
-        animate_to_colors(previous_spread, spread, pixel_strip)
+        #animate_to_colors(previous_spread, spread, pixel_strip)
+        animate_train_rolling(previous_spread, spread, pixel_strip)
     else:
         strip_set_colors(pixel_strip, spread)
         pixel_strip.show()
