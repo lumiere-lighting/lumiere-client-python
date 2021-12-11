@@ -24,3 +24,28 @@ Configuration is managed through environment variables.  These can be managed in
 Run with `sudo python lumiere-client/client.py`
 
 Note that `sudo` is necessary to be able to access the GPIO pins.
+
+## Deplopyment
+
+### Raspberry Pi
+
+Initial configuartion of the Raspberry Pi.
+
+- `raspi-config`
+  - Enable SSH
+  - Unsure how to exactly make sure that the PWM pins are actually accessible? Enable SPI? Enable I2C?
+  - Configure timezone
+  - Make sure network is available on boot
+  - Make sure it can connect to the internet.
+
+Install depdendencies.
+
+- (see above)
+
+Install the startup/service script.
+
+- Copy the `init.d` script with something like:
+   - `sudo cp ./deploy/lumiere-client.init.d /etc/init.d/lumiere-client`
+- Update the script as needed.  Mostly this will just be updating the `dir` variable.
+- Install to be able to be run on startup.
+   - `sudo update-rc.d lumiere-client defaults`
