@@ -57,7 +57,6 @@ def lights(lights):
         id = lights["id"]
         random.seed(f"{id}-animation")
         animation = random.choice(all_animations)
-        logging.info(f"animation: {animation}")
         animation(previous_spread, spread, pixel_strip, lights["id"])
     else:
         strip_set_colors(pixel_strip, spread)
