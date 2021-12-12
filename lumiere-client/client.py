@@ -46,6 +46,7 @@ def lights(lights):
     global previous_lights
     global previous_spread
     if previous_lights is not None and "id" in previous_lights and lights["id"] == previous_lights["id"]:
+        id = lights["id"]
         logger.info(f"Same lights {id}, no update.")
         return
 
