@@ -1,4 +1,4 @@
-# Lumiere Client (Python)sudo
+# Lumiere Client (Python)
 
 ## Install
 
