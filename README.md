@@ -45,7 +45,7 @@ Install depdendencies.
 Install the startup/service script.
 
 - Copy the `init.d` script with something like:
-   - `sudo cp ./deploy/lumiere-client.init.d /etc/init.d/lumiere-client`
+   - `sudo cp ./deploy/lumiere-client.init.d /etc/init.d/lumiere-client && sudo chmod +x /etc/init.d/lumiere-client`
 - Update the script as needed.  Mostly this will just be updating the `dir` variable.
 - Install to be able to be run on startup.
    - `sudo update-rc.d lumiere-client defaults`
