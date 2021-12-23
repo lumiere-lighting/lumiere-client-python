@@ -4,7 +4,7 @@ import random
 from coloraide import Color
 # See easing functions:
 # https://github.com/semitable/easing-functions/blob/master/easing_functions/__init__.py
-from easing_functions import LinearInOut, CubicEaseInOut
+from easing_functions import LinearInOut, CubicEaseInOut, CubicEaseIn, CubicEaseOut
 from utils import strip_set_colors
 
 
@@ -119,6 +119,59 @@ def animate_fade_out_then_in_random(start_colors, end_colors, strip, id, length 
     animate(frame_handler_fade_in, length = length / 2, easing = easing)
 
 
+def animate_roll_around(start_colors, end_colors, strip, id, length = 7, easing = CubicEaseInOut):
+    times = 3
+    window = 10
+
+    def frame_handler_rolling_window(t, colors, direction = 'start'):
+        strip_length = len(colors)
+        span_half = math.floor(window / 2)
+        raw_distance = math.floor((len(start_colors) * times * t) + span_half)
+        raw_distance = raw_distance if raw_distance < strip_length * times else strip_length * times - 1
+        distance = raw_distance % strip_length
+        span_start = distance - span_half
+        span_end = distance + span_half
+
+        #print(f"t {t} | distance: {distance} | raw_distance: {raw_distance}")
+
+        # If start from, then just rollup
+        if direction == 'start' and raw_distance < strip_length:
+            strip_set_colors(strip, [
+                (colors[i] if i >= distance else Color('black'))
+                for i in range(strip_length)
+            ])
+            strip.show()
+
+        # If end from, unfold
+        elif direction == 'end' and raw_distance > strip_length * (times - 1):
+            strip_set_colors(strip, [
+                (colors[i] if i <= distance else Color('black'))
+                for i in range(strip_length)
+            ])
+            strip.show()
+
+        # Otherwise rolling window
+        else:
+            strip_set_colors(strip, [
+                (colors[i] if 
+                    (span_end > span_start and i <= span_end and i >= span_start) or 
+                    (span_end < span_start and (i <= span_end or i >= span_start)) else 
+                        Color('black'))
+                for i in range(strip_length)
+            ])
+            strip.show()
+
+    def frame_handler_start(t):
+        return frame_handler_rolling_window(t, start_colors, 'start')
+
+    def frame_handler_end(t):
+        return frame_handler_rolling_window(t, end_colors, 'end')
+
+    animate(frame_handler_start, length = length / 2, easing = CubicEaseIn)
+    animate(frame_handler_end, length = length / 2, easing = CubicEaseOut)
+
+
+
 # Consistent math to calculate for sub_animations.  For instance, to run
 # a complete animation from 0.2 through 0.7 of an animation t (0 - 1).
 # Returns 0 - 1 of the sub-time (i.e. 0.2 - 0.7)
@@ -135,5 +188,6 @@ all_animations = [
     animate_to_colors,
     animate_roll_out_then_in,
     # animate_fade_out_then_in,
-    animate_fade_out_then_in_random
+    animate_fade_out_then_in_random,
+    animate_roll_around
 ]
