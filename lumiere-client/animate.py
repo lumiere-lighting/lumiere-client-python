@@ -27,7 +27,7 @@ def animate(frame_handler, length = 4, framerate = 30, easing = LinearInOut):
     e = time.perf_counter()
 
 
-def animate_to_colors(start_colors, end_colors, strip, id, length = 4, easing = CubicEaseInOut):
+def animate_to_colors(start_colors, end_colors, strip, id, length = 5, easing = CubicEaseInOut):
     # Calculate transition functions
     interpolations = []
     for i in range(len(start_colors)):
@@ -80,7 +80,7 @@ def animate_fade_out_then_in(start_colors, end_colors, strip, id, length = 5, ea
     animate_to_colors(all_black, end_colors, strip, id, length = length / 2, easing = easing)
 
 
-def animate_fade_out_then_in_random(start_colors, end_colors, strip, id, length = 5, easing = CubicEaseInOut):
+def animate_fade_out_then_in_random(start_colors, end_colors, strip, id, length = 6, easing = CubicEaseInOut):
     random.seed(f"{id}-animate_fade_out_then_in_random")
     all_black = [Color('black') for i in range(len(start_colors))]
 
@@ -89,7 +89,7 @@ def animate_fade_out_then_in_random(start_colors, end_colors, strip, id, length 
     start_out = []
     for i in range(len(start_colors)):
         interpolations_out.append(Color(start_colors[i]).interpolate(Color(all_black[i]), space="srgb"))
-        start_out.append(random.uniform(0, 0.9))
+        start_out.append(random.uniform(0.1, 1))
 
     # Calculate transitions for fade in
     interpolations_in = []
@@ -101,7 +101,7 @@ def animate_fade_out_then_in_random(start_colors, end_colors, strip, id, length 
     # First half (fade out)
     def frame_handler_fade_out(t):
         strip_set_colors(strip, [
-            (interpolations_out[i](proportion_time(start_out[i], 1, t)) if t >= start_out[i] else start_colors[i])
+            (interpolations_out[i](proportion_time(0, start_out[i], t)) if t <= start_out[i] else all_black[i])
             for i in range(len(interpolations_out))
         ])
         strip.show()
@@ -119,7 +119,9 @@ def animate_fade_out_then_in_random(start_colors, end_colors, strip, id, length 
     animate(frame_handler_fade_in, length = length / 2, easing = easing)
 
 
-# Consistent math to calculate for sub_animations
+# Consistent math to calculate for sub_animations.  For instance, to run
+# a complete animation from 0.2 through 0.7 of an animation t (0 - 1).
+# Returns 0 - 1 of the sub-time (i.e. 0.2 - 0.7)
 def proportion_time(start, end, t):
     if t < start or t > end:
         return -1
