@@ -18,6 +18,7 @@ Configuration is managed through environment variables.  These can be managed in
 - `STRIP_TYPE`: LED light configuration.  Can be `rgb`, `grb`, etc; defaults to `rgb`.
 - `MAX_SPREAD`: When displaying pixels, the spread is the amount of repeating of a color.  Should be 1 or great; defaults to `5`.
 - `LOG_LEVEL`: Sets the [minimum log level](https://docs.python.org/3/library/logging.html#levels); defaults to warning.
+- `FRAME_RATE`: The frame rate for animations, might help with light rendering issues; defaults to 30.
 
 ## Usage
 

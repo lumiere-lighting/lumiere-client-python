@@ -45,20 +45,32 @@ def lights(lights):
     # Don't update if the same lights
     global previous_lights
     global previous_spread
-    if previous_lights is not None and "id" in previous_lights and lights["id"] == previous_lights["id"]:
+    if (
+        previous_lights is not None
+        and "id" in previous_lights
+        and lights["id"] == previous_lights["id"]
+    ):
         id = lights["id"]
         logger.info(f"Same lights {id}, no update.")
         return
 
     # Spread out
-    spread = spread_colors(lights["colors"], config["pixel_length"], lights["id"], config["max_spread"])
+    spread = spread_colors(
+        lights["colors"], config["pixel_length"], lights["id"], config["max_spread"]
+    )
 
     # Animate if we know previous lights
     if previous_spread:
         id = lights["id"]
         random.seed(f"{id}-animation")
         animation = random.choice(all_animations)
-        animation(previous_spread, spread, pixel_strip, lights["id"])
+        animation(
+            previous_spread,
+            spread,
+            pixel_strip,
+            lights["id"],
+            framerate=config["frame_rate"],
+        )
     else:
         strip_set_colors(pixel_strip, spread)
         pixel_strip.show()
@@ -80,6 +92,9 @@ def main():
 
     # Create NeoPixel object with appropriate configuration.
     # TODO: Should other params be configurable
+    # TODO: This is not well documented.
+    # strip = PixelStrip(LED_COUNT, LED_PIN, LED_FREQ_HZ, LED_DMA, LED_INVERT, LED_BRIGHTNESS, LED_CHANNEL)
+    print(config["brightness"])
     pixel_strip = PixelStrip(
         config["pixel_length"],
         config["gpio_channel"],
@@ -89,7 +104,7 @@ def main():
         freq_hz=800000,
         invert=False,
         channel=0,
-        gamma=None
+        gamma=None,
     )
 
     pixel_strip.begin()
