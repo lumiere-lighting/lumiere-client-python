@@ -29,7 +29,14 @@ def animate(frame_handler, length=4, framerate=30, easing=LinearInOut):
 
 
 def animate_to_colors(
-    start_colors, end_colors, strip, id, length=5, easing=CubicEaseInOut, framerate=30
+    start_colors,
+    end_colors,
+    strip,
+    id,
+    length=5,
+    easing=CubicEaseInOut,
+    framerate=30,
+    gamma_correction=0,
 ):
     # Calculate transition functions
     interpolations = []
@@ -40,14 +47,23 @@ def animate_to_colors(
 
     # Frame handler function
     def frame_handler(t):
-        strip_set_colors(strip, [i(t) for i in interpolations])
+        strip_set_colors(
+            strip, [i(t) for i in interpolations], gamma_correction=gamma_correction
+        )
         strip.show()
 
     animate(frame_handler, length=length, easing=easing, framerate=framerate)
 
 
 def animate_roll_out_then_in(
-    start_colors, end_colors, strip, id, length=5, easing=CubicEaseInOut, framerate=30
+    start_colors,
+    end_colors,
+    strip,
+    id,
+    length=5,
+    easing=CubicEaseInOut,
+    framerate=30,
+    gamma_correction=0,
 ):
     # Sub handler to move from color to black (or vic-versa)
     def roll_color(c, t, from_black=True):
@@ -61,7 +77,7 @@ def animate_roll_out_then_in(
             else:
                 moved.append(Color("black") if i <= distance else c[i])
 
-        strip_set_colors(strip, moved)
+        strip_set_colors(strip, moved, gamma_correction=gamma_correction)
         strip.show()
 
     # First part
@@ -78,7 +94,14 @@ def animate_roll_out_then_in(
 
 
 def animate_fade_out_then_in(
-    start_colors, end_colors, strip, id, length=5, easing=CubicEaseInOut, framerate=30
+    start_colors,
+    end_colors,
+    strip,
+    id,
+    length=5,
+    easing=CubicEaseInOut,
+    framerate=30,
+    gamma_correction=0,
 ):
     all_black = [Color("black") for i in range(len(start_colors))]
 
@@ -91,6 +114,7 @@ def animate_fade_out_then_in(
         length=length / 2,
         easing=easing,
         framerate=framerate,
+        gamma_correction=gamma_correction,
     )
 
     # Second part
@@ -102,11 +126,19 @@ def animate_fade_out_then_in(
         length=length / 2,
         easing=easing,
         framerate=framerate,
+        gamma_correction=gamma_correction,
     )
 
 
 def animate_fade_out_then_in_random(
-    start_colors, end_colors, strip, id, length=6, easing=CubicEaseInOut, framerate=30
+    start_colors,
+    end_colors,
+    strip,
+    id,
+    length=6,
+    easing=CubicEaseInOut,
+    framerate=30,
+    gamma_correction=0,
 ):
     random.seed(f"{id}-animate_fade_out_then_in_random")
     all_black = [Color("black") for i in range(len(start_colors))]
@@ -141,6 +173,7 @@ def animate_fade_out_then_in_random(
                 )
                 for i in range(len(interpolations_out))
             ],
+            gamma_correction=gamma_correction,
         )
         strip.show()
 
@@ -160,6 +193,7 @@ def animate_fade_out_then_in_random(
                 )
                 for i in range(len(interpolations_in))
             ],
+            gamma_correction=gamma_correction,
         )
         strip.show()
 
@@ -169,7 +203,14 @@ def animate_fade_out_then_in_random(
 
 
 def animate_roll_around(
-    start_colors, end_colors, strip, id, length=7, easing=CubicEaseInOut, framerate=30
+    start_colors,
+    end_colors,
+    strip,
+    id,
+    length=7,
+    easing=CubicEaseInOut,
+    framerate=30,
+    gamma_correction=0,
 ):
     times = 3
     window = 10
@@ -197,6 +238,7 @@ def animate_roll_around(
                     (colors[i] if i >= distance else Color("black"))
                     for i in range(strip_length)
                 ],
+                gamma_correction=gamma_correction,
             )
             strip.show()
 
@@ -208,6 +250,7 @@ def animate_roll_around(
                     (colors[i] if i <= distance else Color("black"))
                     for i in range(strip_length)
                 ],
+                gamma_correction=gamma_correction,
             )
             strip.show()
 
@@ -226,6 +269,7 @@ def animate_roll_around(
                     )
                     for i in range(strip_length)
                 ],
+                gamma_correction=gamma_correction,
             )
             strip.show()
 

@@ -70,6 +70,7 @@ def lights(lights):
             pixel_strip,
             lights["id"],
             framerate=config["frame_rate"],
+            gamma_correction=config["gamma_correction"],
         )
     else:
         strip_set_colors(pixel_strip, spread, config["gamma_correction"])
