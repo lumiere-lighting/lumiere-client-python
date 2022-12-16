@@ -32,5 +32,5 @@ def get_config():
         "max_spread": int(environ.get("MAX_SPREAD", 5)),
         "log_level": int(environ.get("LOG_LEVEL", logging.WARNING)),
         "frame_rate": int(environ.get("FRAME_RATE", 30)),
-        "gamma_correction": float(environ.get("GAMMA_CORRECTION", "2.7")),
+        "gamma_correction": float(environ.get("GAMMA_CORRECTION", "2.3")),
     }
