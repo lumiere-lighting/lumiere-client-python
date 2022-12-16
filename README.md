@@ -19,6 +19,7 @@ Configuration is managed through environment variables.  These can be managed in
 - `MAX_SPREAD`: When displaying pixels, the spread is the amount of repeating of a color.  Should be 1 or great; defaults to `5`.
 - `LOG_LEVEL`: Sets the [minimum log level](https://docs.python.org/3/library/logging.html#levels); defaults to warning.
 - `FRAME_RATE`: The frame rate for animations, might help with light rendering issues; defaults to 30.
+- `GAMMA_CORRECTION`: [Gamma correction](https://learn.adafruit.com/led-tricks-gamma-correction) constant; set to 0 to turn off; defaults to 2.7.
 
 ## Usage
 

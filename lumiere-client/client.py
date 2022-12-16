@@ -72,7 +72,7 @@ def lights(lights):
             framerate=config["frame_rate"],
         )
     else:
-        strip_set_colors(pixel_strip, spread)
+        strip_set_colors(pixel_strip, spread, config["gamma_correction"])
         pixel_strip.show()
 
     # Keep track of lights
@@ -94,7 +94,6 @@ def main():
     # TODO: Should other params be configurable
     # TODO: This is not well documented.
     # strip = PixelStrip(LED_COUNT, LED_PIN, LED_FREQ_HZ, LED_DMA, LED_INVERT, LED_BRIGHTNESS, LED_CHANNEL)
-    print(config["brightness"])
     pixel_strip = PixelStrip(
         config["pixel_length"],
         config["gpio_channel"],

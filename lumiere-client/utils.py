@@ -5,13 +5,18 @@ from rpi_ws281x import Color as PixelColor
 
 
 # Coloraide color to pixel
-def color_to_pixel(color):
+def color_to_pixel(color, gamma_correction):
     c_dict = color.to_dict()
-    return PixelColor(math.ceil(c_dict["r"] * 255), math.ceil(c_dict["g"] * 255), math.ceil(c_dict["b"] * 255))
+    return PixelColor(
+        math.ceil(gamma_correct(c_dict["r"], gamma_correction) * 255),
+        math.ceil(gamma_correct(c_dict["g"], gamma_correction) * 255),
+        math.ceil(gamma_correct(c_dict["b"], gamma_correction) * 255),
+    )
+
 
 # Hex to pixel
-def hex_to_pixel(hex_string):
-    return color_to_pixel(Color(hex_string))
+def hex_to_pixel(hex_string, gamma_correction):
+    return color_to_pixel(Color(hex_string), gamma_correction)
 
 
 # Spread out colors into strip
@@ -28,6 +33,7 @@ def spread_colors(colors, pixel_length, id, max_spread):
 
         # Spread place used to know how many times to repeat the color place
         spread_place = 0 if spread_place == spread - 1 else spread_place + 1
+
         # When the spread place starts, increment the color.
         if i > 0 or spread == 1:
             color_place = color_place + 1 if spread_place == 0 else color_place
@@ -37,9 +43,18 @@ def spread_colors(colors, pixel_length, id, max_spread):
 
 
 # Set all colors in a strip
-def strip_set_colors(strip, colors):
+def strip_set_colors(strip, colors, gamma_correction):
     for i in range(len(colors)):
         if isinstance(colors[i], Color):
-            strip.setPixelColor(i, color_to_pixel(colors[i]))
+            strip.setPixelColor(i, color_to_pixel(colors[i], gamma_correction))
         else:
-            strip.setPixelColor(i, hex_to_pixel(colors[i]))
+            strip.setPixelColor(i, hex_to_pixel(colors[i], gamma_correction))
+
+
+# Correct gamma for a value.  Value should be value between
+# 0 and 1.
+def gamma_correct(value, gamma_correction):
+    if not gamma_correction:
+        return value
+
+    return pow(value, gamma_correction)
