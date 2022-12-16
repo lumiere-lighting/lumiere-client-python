@@ -51,8 +51,9 @@ def strip_set_colors(strip, colors, gamma_correction):
             strip.setPixelColor(i, hex_to_pixel(colors[i], gamma_correction))
 
 
-# Correct gamma for a value.  Value should be value between
-# 0 and 1.
+# Correct gamma for a value.  Value should be value between 0 and 1.
+# Inspiration:
+# https://github.com/adafruit/Adafruit_CircuitPython_FancyLED/blob/main/adafruit_fancyled/adafruit_fancyled.py#L372
 def gamma_correct(value, gamma_correction):
     if not gamma_correction:
         return value
