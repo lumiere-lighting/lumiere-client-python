@@ -1,11 +1,12 @@
 import math
-import time
 import random
+import time
+
 from coloraide import Color
 
 # See easing functions:
 # https://github.com/semitable/easing-functions/blob/master/easing_functions/__init__.py
-from easing_functions import LinearInOut, CubicEaseInOut, CubicEaseIn, CubicEaseOut
+from easing_functions import CubicEaseIn, CubicEaseInOut, CubicEaseOut, LinearInOut
 from utils import strip_set_colors
 
 
@@ -42,7 +43,7 @@ def animate_to_colors(
     interpolations = []
     for i in range(len(start_colors)):
         interpolations.append(
-            Color(start_colors[i]).interpolate(Color(end_colors[i]), space="srgb")
+            Color.interpolate([start_colors[i], Color(end_colors[i])], space="srgb")
         )
 
     # Frame handler function
@@ -148,7 +149,7 @@ def animate_fade_out_then_in_random(
     start_out = []
     for i in range(len(start_colors)):
         interpolations_out.append(
-            Color(start_colors[i]).interpolate(Color(all_black[i]), space="srgb")
+            Color.interpolate([start_colors[i], Color(all_black[i])], space="srgb")
         )
         start_out.append(random.uniform(0.1, 1))
 
@@ -157,7 +158,7 @@ def animate_fade_out_then_in_random(
     start_in = []
     for i in range(len(start_colors)):
         interpolations_in.append(
-            Color(all_black[i]).interpolate(Color(end_colors[i]), space="srgb")
+            Color.interpolate([all_black[i], Color(end_colors[i])], space="srgb")
         )
         start_in.append(random.uniform(0, 0.9))
 
