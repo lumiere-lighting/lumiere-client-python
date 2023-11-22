@@ -1,16 +1,16 @@
 import math
 import random
+
 from coloraide import Color
 from rpi_ws281x import Color as PixelColor
 
 
 # Coloraide color to pixel
 def color_to_pixel(color, gamma_correction):
-    c_dict = color.to_dict()
     return PixelColor(
-        math.ceil(gamma_correct(c_dict["r"], gamma_correction) * 255),
-        math.ceil(gamma_correct(c_dict["g"], gamma_correction) * 255),
-        math.ceil(gamma_correct(c_dict["b"], gamma_correction) * 255),
+        math.ceil(gamma_correct(color.get("srgb.red"), gamma_correction) * 255),
+        math.ceil(gamma_correct(color.get("srgb.green"), gamma_correction) * 255),
+        math.ceil(gamma_correct(color.get("srgb.blue"), gamma_correction) * 255),
     )
 
 
