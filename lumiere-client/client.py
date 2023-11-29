@@ -1,12 +1,14 @@
 # Dependencies
-import socketio
 import logging
 import random
+
+import socketio
+from animate import all_animations
+from config import get_config
 from dotenv import load_dotenv
 from rpi_ws281x import PixelStrip
-from config import get_config
-from utils import spread_colors, strip_set_colors
-from animate import all_animations
+from tenacity import retry, stop_after_attempt, wait_fixed
+from utils import after_log, spread_colors, strip_set_colors
 
 # Config
 load_dotenv()
@@ -26,6 +28,7 @@ previous_spread = None
 
 # Global strip
 pixel_strip = None
+
 
 # Socket on connection
 @sio.event
@@ -87,6 +90,11 @@ def disconnect():
     logger.info("disconnected from server")
 
 
+@retry(
+    stop=stop_after_attempt(10),
+    wait=wait_fixed(5),
+    after=after_log(logger, logging.DEBUG),
+)
 def main():
     """Main program logic."""
     global pixel_strip
