@@ -7,8 +7,8 @@ from animate import all_animations
 from config import get_config
 from dotenv import load_dotenv
 from rpi_ws281x import PixelStrip
-from tenacity import retry, stop_after_attempt, wait_fixed
-from utils import after_log, spread_colors, strip_set_colors
+from tenacity import after_log, retry, stop_after_attempt, wait_fixed
+from utils import spread_colors, strip_set_colors
 
 # Config
 load_dotenv()
