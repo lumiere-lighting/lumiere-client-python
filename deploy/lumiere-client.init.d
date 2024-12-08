@@ -11,7 +11,7 @@
 ### END INIT INFO
 
 dir="/home/pi/code/lumiere-client-python"
-cmd="python lumiere-client/client.py"
+cmd="uv run lumiere-client/client.py"
 user="root"
 
 name=`basename $0`
