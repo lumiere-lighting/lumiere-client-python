@@ -3,7 +3,10 @@
 ## Install
 
 - [Install `uv`](https://docs.astral.sh/uv/getting-started/installation/)
-- (optional) Install Python dependencies: ` uv pip install -r pyproject.toml`
+  - To install for all users on Raspberry Pi, a way to do it is: `curl -LsSf https://astral.sh/uv/install.sh | env UV_INSTALL_DIR="/usr/local/bin" sudo sh`
+- Need Python dev,
+  - `sudo apt-get install python3-dev`
+- (optional) Install Python dependencies: `uv pip install -r pyproject.toml`
   - Note that `sudo` is used since the script will need to run as root. ??
 
 ## Configure

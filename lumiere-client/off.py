@@ -57,6 +57,7 @@ def main():
         [Color("black") for i in range(config["pixel_length"])],
         config["gamma_correction"],
     )
+    pixel_strip.show()
 
 
 if __name__ == "__main__":
